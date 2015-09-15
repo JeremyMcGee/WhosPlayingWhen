@@ -7,16 +7,26 @@ namespace Admin.Models
 {
     public partial class Child
     {
+        public Child()
+        {
+            Fixtures = new List<Fixture>();
+        }
+
         [Key]
         public int Id { get; set; }
 
         public string ChildName { get; set; }
 
-        public virtual List<Fixture> Fixtures { get; set; }
+        public virtual ICollection<Fixture> Fixtures { get; set; }
     }
 
     public partial class Fixture
     {
+        public Fixture()
+        {
+            Children = new List<Child>();
+        }
+
         [Key]
         public int Id { get; set; }
 
@@ -24,19 +34,24 @@ namespace Admin.Models
 
         public virtual School School { get; set; }
 
-        public virtual List<Child> Children { get; set; }
+        public virtual ICollection<Child> Children { get; set; }
 
         public string Url { get; set; }
     }
 
     public partial class School
     {
+        public School()
+        {
+            Fixtures = new List<Fixture>();
+        }
+
         [Key]
         public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public virtual List<Fixture> Fixtures { get; set; }
+        public virtual ICollection<Fixture> Fixtures { get; set; }
     }
 
 
