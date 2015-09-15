@@ -1,27 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Admin.Models
 {
-    public class Child
+    public partial class Child
     {
+        [Key]
+        public int Id { get; set; }
+
         public string ChildName { get; set; }
 
         public virtual List<Fixture> Fixtures { get; set; }
     }
 
-    public class Fixture
+    public partial class Fixture
     {
+        [Key]
+        public int Id { get; set; }
+
         public DateTime Kickoff { get; set; }
 
-        public School School { get; set; }
+        public virtual School School { get; set; }
 
         public virtual List<Child> Children { get; set; }
+
+        public string Url { get; set; }
     }
 
-    public class School
+    public partial class School
     {
+        [Key]
+        public int Id { get; set; }
+
         public string Name { get; set; }
 
         public virtual List<Fixture> Fixtures { get; set; }
