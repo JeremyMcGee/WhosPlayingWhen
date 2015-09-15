@@ -1,8 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Admin.Models
 {
+    public class Child
+    {
+        public string ChildName { get; set; }
+
+        public virtual List<Fixture> Fixtures { get; set; }
+    }
+
+    public class Fixture
+    {
+        public DateTime Kickoff { get; set; }
+
+        public School School { get; set; }
+
+        public virtual List<Child> Children { get; set; }
+    }
+
+    public class School
+    {
+        public string Name { get; set; }
+
+        public virtual List<Fixture> Fixtures { get; set; }
+    }
+
+
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
