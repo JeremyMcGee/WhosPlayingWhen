@@ -81,12 +81,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Admin\Admin.csproj">
-      <Project>{70544849-a8cb-4a6d-8355-9da36c5f9832}</Project>
-      <Name>Admin</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="SchoolDataContext-20150915225229.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

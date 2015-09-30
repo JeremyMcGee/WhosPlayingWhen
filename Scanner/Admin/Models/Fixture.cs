@@ -8,7 +8,7 @@ namespace Admin.Models
     {
         public Fixture()
         {
-            Children = new List<Child>();
+            PlayingStatuses = new List<PlayingStatus>();
         }
 
         [Key]
@@ -16,9 +16,11 @@ namespace Admin.Models
 
         public DateTime Kickoff { get; set; }
 
-        public virtual School School { get; set; }
+        public virtual School HostSchool { get; set; }
 
-        public virtual ICollection<Child> Children { get; set; }
+        public virtual School Opponent { get; set; }
+
+        public virtual ICollection<PlayingStatus> PlayingStatuses { get; set; }
 
         public string Url { get; set; }
     }

@@ -53,10 +53,12 @@
                 Child child = new Child();
                 db.Children.Add(child);
 
-                child.Fixtures.Add(fixture);
+                PlayingStatus playingStatus = PlayingStatus.Create(fixture, child);
+                db.PlayingStatuses.Add(playingStatus);
+
                 db.SaveChanges();
 
-                Assert.That(child.Fixtures.Contains<Fixture>(fixture));
+                Assert.That(child.PlayingStatuses.Contains<PlayingStatus>(playingStatus));
             }
         }
     }

@@ -24,6 +24,8 @@ namespace Admin.Models
         public System.Data.Entity.DbSet<Admin.Models.School> Schools { get; set; }
 
         public System.Data.Entity.DbSet<Admin.Models.Fixture> Fixtures { get; set; }
+
+        public DbSet<PlayingStatus> PlayingStatuses { get; set; }
     
     }
 }

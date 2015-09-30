@@ -41,14 +41,9 @@
   <ItemGroup>
     <Compile Include="CalendarListPage.cs" />
     <Compile Include="PageConfig.cs" />
+    <Compile Include="PlayingStatus.cs" />
     <Compile Include="Site.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Admin\Admin.csproj">
-      <Project>{70544849-a8cb-4a6d-8355-9da36c5f9832}</Project>
-      <Name>Admin</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

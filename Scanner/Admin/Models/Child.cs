@@ -7,7 +7,7 @@ namespace Admin.Models
     {
         public Child()
         {
-            Fixtures = new List<Fixture>();
+            PlayingStatuses = new List<PlayingStatus>();
         }
 
         [Key]
@@ -15,14 +15,6 @@ namespace Admin.Models
 
         public string ChildName { get; set; }
 
-        public virtual ICollection<Fixture> Fixtures { get; set; }
-
-        public void RecordPlayingStatus(PlayingStatus playingStatus)
-        {
-        }
-
-        public void InformParentOfPlayingStatus()
-        {
-        }
+        public virtual ICollection<PlayingStatus> PlayingStatuses { get; set; }
     }
 }
