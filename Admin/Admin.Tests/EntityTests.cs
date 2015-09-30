@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Admin.Migrations;
-using Admin.Models;
-using NUnit.Framework;
-
-namespace Admin.Tests
+﻿namespace Admin.Tests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using NUnit.Framework;
+
+    using Admin.Migrations;
+    using Admin.Models;
+
     [TestFixture]
     public class EntityTests
     {
@@ -42,7 +44,6 @@ namespace Admin.Tests
         [Test]
         public void ChildHasFixtures()
         {
-
             using (var db = new SchoolDataContext())
             {
                 Fixture fixture = new Fixture();
