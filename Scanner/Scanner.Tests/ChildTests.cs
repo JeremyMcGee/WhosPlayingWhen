@@ -13,22 +13,72 @@ namespace Scanner.Tests
         [Test]
         public void InformParentWhenChildAppearsOnFixtureList()
         {
-            var myChild = new Child();
+            const string childName = "Lawrence McGee";
 
-            var fixtureList = new List<Fixture>()
+            var myChild = new Child
             {
-                new Fixture()
+                Name = childName
+            };
+
+            var fixtureList = new List<Fixture>
+            {
+                new Fixture
+                {
+                    Sport = "Rugby Union",
+                    Team = "U8",
+                    School = "Tockington",
+                    Kickoff = new DateTime(2016,1,1,12,00,00),
+                    Players = { childName }
+                }
             };
 
             myChild.UpdateFixtureList(fixtureList);
 
-            Assert.That(myChild.InformParent(), Is.True);
+            Assert.That(myChild.ParentShouldBeInformed(), Is.True);
+            Assert.That(myChild.GetMessageForParent().Contains("Now playing in U8 Rugby Union at Tockington on 01 January 2016 12:00"));
         }
 
         [Test]
         public void InformParentWhenChildDisappearsFromFixtureList()
         {
-            Assert.Inconclusive();
+            const string childName = "Lawrence McGee";
+            const string anotherName = "Vicky Henderson";
+
+            var myChild = new Child
+            {
+                Name = childName
+            };
+
+            var initialFixtureList = new List<Fixture>
+            {
+                new Fixture
+                {
+                    Sport = "Rugby Union",
+                    Team = "U8",
+                    School = "Tockington",
+                    Kickoff = new DateTime(2016,1,1,12,00,00),
+                    Players = { childName }
+                }
+            };
+
+            var myChildWithInitialFixture = myChild.UpdateFixtureList(initialFixtureList);
+
+            var updatedFixtureList = new List<Fixture>
+            {
+                new Fixture
+                {
+                    Sport = "Rugby Union",
+                    Team = "U8",
+                    School = "Tockington",
+                    Kickoff = new DateTime(2016,1,1,12,00,00),
+                    Players = { anotherName }
+                }
+            };
+
+            var myChildWithUpdatedFixture = myChildWithInitialFixture.UpdateFixtureList(updatedFixtureList);
+
+            Assert.That(myChildWithUpdatedFixture.ParentShouldBeInformed(), Is.True);
+            Assert.That(myChild.GetMessageForParent().Contains("Now NOT playing in U8 Rugby Union at Tockington on 01 January 2016 12:00"));
         }
 
         [Test]
@@ -40,19 +90,79 @@ namespace Scanner.Tests
         [Test]
         public void DontInformParentWhenFixtureListUnchanged()
         {
-            Assert.Inconclusive();  
+            const string childName = "Lawrence McGee";
+            const string anotherName = "Vicky Henderson";
+
+            var myChild = new Child
+            {
+                Name = childName
+            };
+
+            var initialFixtureList = new List<Fixture>
+            {
+                new Fixture
+                {
+                    Sport = "Rugby Union",
+                    Team = "U8",
+                    School = "Tockington",
+                    Kickoff = new DateTime(2016,1,1,12,00,00),
+                    Players = { childName }
+                }
+            };
+
+            var myChildWithInitialFixture = myChild.UpdateFixtureList(initialFixtureList);
+
+            var updatedFixtureList = new List<Fixture>
+            {
+                new Fixture
+                {
+                    Sport = "Rugby Union",
+                    Team = "U8",
+                    School = "Tockington",
+                    Kickoff = new DateTime(2016,1,1,12,00,00),
+                    Players = { childName }
+                }
+            };
+
+            var myChildWithUpdatedFixture = myChildWithInitialFixture.UpdateFixtureList(updatedFixtureList);
+
+            Assert.That(myChildWithUpdatedFixture.ParentShouldBeInformed(), Is.False);
+        }
+
+        [Test]
+        public void DontInformParentWhenChildOnListButAnotherChildDropped()
+        {
+            Assert.Inconclusive();
         }
 
         [Test]
         public void InformParentWhenFixtureDetailsChange()
         {
-            Assert.Inconclusive();  
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void CanDistinguishBetweenTwoFixturesOnSameDateAtDifferentPlaces()
+        {
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void CanDistinguishBetweenTwoFixturesAtSamePlaceOnDifferentDates()
+        {
+            Assert.Inconclusive();
+        }
+
+        [Test]
+        public void CanDistinguishBetweenTwoFixturesAtSamePlaceOnSameDate()
+        {
+            Assert.Inconclusive();
         }
 
         [Test]
         public void InformParentWhenFixtureCancelled()
         {
-            Assert.Inconclusive();  
+            Assert.Inconclusive();
         }
 
         [Test]

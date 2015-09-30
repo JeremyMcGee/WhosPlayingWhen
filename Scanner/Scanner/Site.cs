@@ -28,7 +28,7 @@ namespace Scanner
             {
                 var updatedChild = child.UpdateFixtureList(fixtureList);
 
-                if (updatedChild.InformParent())
+                if (updatedChild.ParentShouldBeInformed())
                 {
                     SendMailToParent(child);
                 }
