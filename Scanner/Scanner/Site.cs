@@ -1,10 +1,10 @@
-﻿namespace Scanner
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace Scanner
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public class Site
     {
@@ -13,46 +13,33 @@
             var config = new PageConfig();
 
             var calendarListPage = new CalendarListPage(config.CalendarListUrl);
-            var fixtures = calendarListPage.GetFixtures().ToList();
-            var children = Child.GetAll().ToList();
+            var fixtures = calendarListPage.GetFixtures();
 
-            var updatedChildren = PlayingStatus.UpdatePlayers(fixtures, children);
+            var children = UpdatedChildren(fixtures);
 
-            Child.SaveAll(updatedChildren);
+            Child.SaveAll(children);
         }
-    }
 
-    public class Child
-    {
-        public string Name { get; set; }
-
-        public string ParentName { get; set; }
-
-        public string ParentEmail { get; set; }
-
-        public static IEnumerable<Child> GetAll()
+        private IEnumerable<Child> UpdatedChildren(IEnumerable<Fixture> fixtures)
         {
-            yield break;
+            var fixtureList = fixtures.ToList();
+
+            foreach (var child in Child.GetAll())
+            {
+                var updatedChild = child.UpdateFixtureList(fixtureList);
+
+                if (updatedChild.InformParent())
+                {
+                    SendMailToParent(child);
+                }
+
+                yield return updatedChild;
+            }
         }
 
-        public static void SaveAll(IEnumerable<Child> children)
-        {
-            
-        }
-
-        internal void SetPlayingStatus(PlayingStatus playingStatus)
+        private void SendMailToParent(Child player)
         {
             throw new NotImplementedException();
         }
-
-        internal void InformParent()
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public class Fixture
-    {
-        
     }
 }
