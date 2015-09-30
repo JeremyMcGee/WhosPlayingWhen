@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Scanner
+﻿namespace Scanner
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Admin.Models;
+
     public class Site
     {
         public void Scan()
@@ -27,43 +28,6 @@ namespace Scanner
         }
 
         public IEnumerable<Child> GetChildren()
-        {
-            yield break;
-        }
-    }
-
-    public class PlayingStatus
-    {
-        public PlayingStatus(Fixture fixture, Child child)
-        {
-        }
-    }
-
-    public class Child
-    {
-        public void RecordPlayingStatus(PlayingStatus playingStatus)
-        {
-        }
-
-        public void InformParentOfPlayingStatus()
-        {
-        }
-    }
-
-    public class Fixture
-    {
-    }
-
-    public class CalendarListPage
-    {
-        private string url;
-
-        public CalendarListPage(string url)
-        {
-            this.url = url;
-        }
-
-        public IEnumerable<Fixture> GetFixtures()
         {
             yield break;
         }
