@@ -51,13 +51,14 @@ namespace Scanner
 
             foreach (var fixture in fixturesPlayingIn)
             {
-                if (!previousFixturesPlayingIn.Any(previousFixture => previousFixture.CanBeConsideredSameAs(fixture)))
+                if (!previousFixturesPlayingIn.Any(previousFixture => previousFixture.CanBeConsideredSameAs(fixture)) 
+                    && fixture.Kickoff > DateTime.Now)
                 {
                     var resultString = string.Format("Now playing in {0} {1} at {2} on {3:f}",
                         fixture.Team,
                         fixture.Sport,
                         fixture.School,
-                        fixture.Kickoff.Value);
+                        fixture.Kickoff);
 
                     result.Add(resultString);
                 }
@@ -65,13 +66,14 @@ namespace Scanner
 
             foreach (var previousFixture in previousFixturesPlayingIn)
             {
-                if (!fixturesPlayingIn.Any(fixture => fixture.CanBeConsideredSameAs(previousFixture)))
+                if (!fixturesPlayingIn.Any(fixture => fixture.CanBeConsideredSameAs(previousFixture))
+                    && previousFixture.Kickoff > DateTime.Now)
                 {
                     var resultString = string.Format("Now NOT playing in {0} {1} at {2} on {3:f}",
                         previousFixture.Team,
                         previousFixture.Sport,
                         previousFixture.School,
-                        previousFixture.Kickoff.Value);
+                        previousFixture.Kickoff);
 
                     result.Add(resultString);
                 }
