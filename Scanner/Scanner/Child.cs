@@ -22,16 +22,6 @@ namespace Scanner
 
         private List<Fixture> previousFixturesPlayingIn;
 
-        public static IEnumerable<Child> GetAll()
-        {
-            yield break;
-        }
-
-        public static void SaveAll(IEnumerable<Child> children)
-        {
-
-        }
-
         public Child UpdateFixtureList(List<Fixture> fixtures)
         {
             previousFixturesPlayingIn = fixturesPlayingIn;
