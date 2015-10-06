@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Scanner
 {
@@ -18,14 +19,16 @@ namespace Scanner
 
         public string ParentEmail { get; set; }
 
+        [JsonProperty("FixturesPlayingIn")]
         private List<Fixture> fixturesPlayingIn;
 
+        [JsonProperty("PreviousFixturesPlayingIn")]
         private List<Fixture> previousFixturesPlayingIn;
 
         public Child UpdateFixtureList(List<Fixture> fixtures)
         {
             previousFixturesPlayingIn = fixturesPlayingIn;
-            fixturesPlayingIn = fixtures.Where(fixture => fixture.Players.Contains(this.Name)).ToList();
+            this.fixturesPlayingIn = fixtures.Where(fixture => fixture.Players.Contains(this.Name)).ToList();
 
             return this;
         }

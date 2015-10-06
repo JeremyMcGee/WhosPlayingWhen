@@ -1,4 +1,8 @@
-﻿namespace Scanner
+﻿using System;
+using System.IO;
+using Newtonsoft.Json;
+
+namespace Scanner
 {
     using System.Collections.Generic;
 
@@ -13,12 +17,24 @@
 
         public IEnumerable<Child> GetAll()
         {
-            yield break;
+            string json = File.ReadAllText(GetBackingStoreFilename());
+            return JsonConvert.DeserializeObject<IEnumerable<Child>>(json);
         }
 
         public void SaveAll(IEnumerable<Child> children)
         {
+            string json = JsonConvert.SerializeObject(children);
 
+            var applicationFile = GetBackingStoreFilename();
+            File.WriteAllText(applicationFile, json);
+        }
+
+        private static string GetBackingStoreFilename()
+        {
+            var applicationFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Scanner");
+            Directory.CreateDirectory(applicationFolder);
+            var applicationFile = Path.Combine(applicationFolder, "children.json");
+            return applicationFile;
         }
     }
 }
