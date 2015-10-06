@@ -11,6 +11,17 @@
         private const string backingStore = "scanner";
         private readonly BackingStore persister = new BackingStore(backingStore);
 
+        public Site()
+        {
+            persister.GetInitialChildren = GetDefaultInitialChildren;
+        }
+
+        public void Initialize()
+        {
+            persister.RemoveBackingStore();
+            Scan();
+        }
+
         public void Scan()
         {
             var config = new PageConfig();
@@ -43,6 +54,12 @@
         private void SendMailToParent(Child player)
         {
             throw new NotImplementedException();
+        }
+
+        private IEnumerable<Child> GetDefaultInitialChildren()
+        {
+            yield return new Child { Name = "Julian McGee", ParentEmail = "jeremy.mcgee@bassettdata.com" };
+            yield return new Child { Name = "Virginia McGee", ParentEmail = "jeremy.mcgee@bassettdata.com" };
         }
     }
 }

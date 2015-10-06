@@ -15,10 +15,28 @@ namespace Scanner
             this.backingStoreName = backingStoreName;
         }
 
+        public Func<IEnumerable<Child>> GetInitialChildren { private get; set; }
+
         public IEnumerable<Child> GetAll()
         {
-            string json = File.ReadAllText(GetBackingStoreFilename());
+            string backingStoreFilename = GetBackingStoreFilename();
+            if (!File.Exists(backingStoreFilename))
+            {
+                return GetInitialChildren.Invoke();
+            }
+
+            string json = File.ReadAllText(backingStoreFilename);
             return JsonConvert.DeserializeObject<IEnumerable<Child>>(json);
+        }
+
+        public void RemoveBackingStore()
+        {
+            string backingStoreFilename = GetBackingStoreFilename();
+
+            if (File.Exists(backingStoreFilename))
+            {
+                File.Delete(backingStoreFilename);
+            }
         }
 
         public void SaveAll(IEnumerable<Child> children)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Scanner
 {
@@ -13,7 +14,7 @@ namespace Scanner
 
         public IEnumerable<Fixture> GetFixtures()
         {
-            yield break;
+            throw new NotImplementedException();
         }
     }
 }
