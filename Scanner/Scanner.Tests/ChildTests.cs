@@ -77,7 +77,7 @@
             Assert.That(myChildWithUpdatedFixture.ParentShouldBeInformed(), Is.True);
             Assert.That(myChild.GetMessageForParent().Contains("Now NOT playing in U8 Rugby Union at Tockington on 01 January 2016 12:00"));
         }
-        
+
         [Test]
         public void DontInformParentWhenFixtureListUnchanged()
         {
