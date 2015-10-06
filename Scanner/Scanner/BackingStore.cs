@@ -29,11 +29,11 @@ namespace Scanner
             File.WriteAllText(applicationFile, json);
         }
 
-        private static string GetBackingStoreFilename()
+        private string GetBackingStoreFilename()
         {
             var applicationFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Scanner");
             Directory.CreateDirectory(applicationFolder);
-            var applicationFile = Path.Combine(applicationFolder, "children.json");
+            var applicationFile = Path.Combine(applicationFolder, string.Format("{0}.json", backingStoreName));
             return applicationFile;
         }
     }
