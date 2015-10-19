@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using HtmlAgilityPack;
-
-namespace Scanner
+﻿namespace Scanner
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using HtmlAgilityPack;
+
     public class CalendarListPage
     {
         private string url;
@@ -27,7 +27,10 @@ namespace Scanner
             {
                 foreach (var column in row.ChildNodes)
                 {
-                    Console.WriteLine(column.InnerHtml);
+                    if (column.InnerHtml.Contains("FixtureDetailsLink"))
+                    {
+                        yield return GetFixture(column.InnerHtml);
+                    }
                 }
             }
 
@@ -36,10 +39,114 @@ namespace Scanner
 
         private string ReadHtml()
         {
+            return ReadHtml(this.url);
+        }
+
+        private string ReadHtml(string url)
+        {
             using (WebClient client = new WebClient())
             {
-                return client.DownloadString(this.url);
+                return client.DownloadString(url);
             }
+        }
+
+
+        internal Fixture GetFixture(string innerHtml)
+        {
+            int href = innerHtml.IndexOf("a href=\"");
+            string linkWithTrail = innerHtml.Substring(href + 8);
+            int endHref = linkWithTrail.IndexOf("\"");
+            string link = linkWithTrail.Substring(0, endHref);
+
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(ReadHtml(link));
+
+            return new Fixture
+            {
+                Sport = GetSport(doc),
+                Team = GetTeam(doc),
+                School = GetOpponent(doc),
+                Kickoff = GetKickoff(doc),
+                HomeAway = GetHomeAway(doc),
+                Venue = GetVenue(doc)
+            };
+        }
+
+        internal string GetSport(HtmlDocument doc)
+        {
+            var htmlToParse = doc.DocumentNode.SelectSingleNode("//table/tr/td/p").InnerHtml;
+
+            int startTagPos = htmlToParse.IndexOf("<br>");
+            return htmlToParse.Substring(0, startTagPos);
+        }
+
+        internal string GetOpponent(HtmlDocument doc)
+        {
+            var htmlToParse = doc.DocumentNode.SelectSingleNode("//table/tr/td/p").InnerHtml;
+
+            int startTagPos = htmlToParse.IndexOf("<br>");
+            var teamAndOpponents = htmlToParse
+                .Substring(startTagPos + 4)
+                .Replace("<b>", "")
+                .Replace("</b>", "");
+
+            return teamAndOpponents.Substring(teamAndOpponents.IndexOf(" v ") + 3);
+        }
+
+        internal string GetTeam(HtmlDocument doc)
+        {
+            var htmlToParse = doc.DocumentNode.SelectSingleNode("//table/tr/td/p").InnerHtml;
+
+            int startTagPos = htmlToParse.IndexOf("<br>");
+            var teamAndOpponents = htmlToParse
+                .Substring(startTagPos + 4)
+                .Replace("<b>", "")
+                .Replace("</b>", "");
+
+            return teamAndOpponents.Substring(0, teamAndOpponents.IndexOf(" v "));
+        }
+
+        internal string GetHomeAway(HtmlDocument doc)
+        {
+            var tagContents = doc.DocumentNode.SelectSingleNode("//table/tr/td/table/tr[2]/td/table/tr[3]/td/a");
+
+            if (tagContents != null)
+            {
+                return tagContents.InnerText.Split('|')[0].Trim();
+            }
+
+            return string.Empty;
+        }
+
+        internal string GetVenue(HtmlDocument doc)
+        {
+            var tagContents = doc.DocumentNode.SelectSingleNode("//table/tr/td/table/tr[2]/td/table/tr[3]/td/a");
+
+            if (tagContents != null)
+            {
+                string[] homeAwayVenue = tagContents.InnerText.Split('|');
+                if (homeAwayVenue.Length > 1)
+                {
+                    return homeAwayVenue[1].Trim();
+                }
+            }
+
+            return "(unknown)";
+        }
+
+        internal DateTime? GetKickoff(HtmlDocument doc)
+        {
+            var dateHtmlToParse = doc.DocumentNode.SelectSingleNode("//table/tr/td/table/tr[2]/td/table/tr/td").InnerHtml;
+            DateTime date = DateTime.Parse(dateHtmlToParse);
+
+            var timeHtmlToParse = doc.DocumentNode.SelectSingleNode("//table/tr/td/table/tr[2]/td/table/tr[2]/td").InnerHtml;
+            if (timeHtmlToParse != string.Empty)
+            {
+                var time = TimeSpan.Parse(timeHtmlToParse);
+                date = date.Add(time);
+            }
+
+            return date;
         }
     }
 }

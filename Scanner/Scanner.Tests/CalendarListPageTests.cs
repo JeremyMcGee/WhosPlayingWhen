@@ -1,5 +1,6 @@
 ﻿namespace Scanner.Tests
 {
+    using System;
     using System.Linq;
     using NUnit.Framework;
 
@@ -14,6 +15,11 @@
 
             var fixtures = calendarListPage.GetFixtures();
             Assert.That(fixtures.Count(), Is.GreaterThan(0));
+
+            foreach (var fixture in fixtures)
+            {
+                Console.WriteLine(fixture.ToString());
+            }
         }
     }
 }
