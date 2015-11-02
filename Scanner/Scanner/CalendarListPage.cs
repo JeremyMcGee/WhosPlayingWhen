@@ -58,10 +58,10 @@
             int endHref = linkWithTrail.IndexOf("\"");
             string link = linkWithTrail.Substring(0, endHref);
 
-            HtmlDocument doc = new HtmlDocument();
+            var doc = new HtmlDocument();
             doc.LoadHtml(ReadHtml(link));
 
-            return new Fixture
+            var fixture = new Fixture
             {
                 Sport = GetSport(doc),
                 Team = GetTeam(doc),
@@ -70,6 +70,44 @@
                 HomeAway = GetHomeAway(doc),
                 Venue = GetVenue(doc)
             };
+
+            fixture.Players.AddRange(GetPlayers(link));
+            return fixture;
+        }
+
+        private IEnumerable<string> GetPlayers(string sourceLink)
+        {
+            string targetLink = sourceLink.Replace("iframefixturedetails.asp", "pu_MatchTeamSheet.asp");
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(ReadHtml(targetLink));
+
+            return GetPlayers(doc);
+        }
+
+        private IEnumerable<string> GetPlayers(HtmlDocument doc)
+        {
+            var htmlNode = doc.DocumentNode.SelectSingleNode("//table/tr[2]/td[2]/ol");
+
+            if (htmlNode == null || htmlNode.FirstChild == null)
+            {
+                Console.WriteLine("No team sheet.");
+                yield break;    
+            }
+
+            htmlNode = htmlNode.FirstChild;
+
+            do
+            {
+                int caret = htmlNode.InnerHtml.IndexOf("<");
+                string result = caret > 0 ? htmlNode.InnerHtml.Substring(0, caret) : htmlNode.InnerText;
+
+                htmlNode = htmlNode.NextSibling;
+
+                Console.WriteLine(result);
+                yield return result;
+                
+            } while (htmlNode != null);
         }
 
         internal string GetSport(HtmlDocument doc)
