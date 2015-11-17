@@ -27,9 +27,13 @@
             {
                 foreach (var column in row.ChildNodes)
                 {
-                    if (column.InnerHtml.Contains("FixtureDetailsLink"))
-                    {
-                        yield return GetFixture(column.InnerHtml);
+                    string currentHtml = column.InnerHtml;
+
+                    while (currentHtml.Contains("a href"))
+                                        {
+                        yield return GetFixture(currentHtml);
+                        int href = currentHtml.IndexOf("a href");
+                        currentHtml = currentHtml.Substring(href + 1);
                     }
                 }
             }
@@ -50,7 +54,6 @@
             }
         }
 
-
         internal Fixture GetFixture(string innerHtml)
         {
             int href = innerHtml.IndexOf("a href=\"");
@@ -68,8 +71,11 @@
                 School = GetOpponent(doc),
                 Kickoff = GetKickoff(doc),
                 HomeAway = GetHomeAway(doc),
-                Venue = GetVenue(doc)
+                Venue = GetVenue(doc),
+                Link = link
             };
+
+            Logger.Debug("   {0}", fixture);
 
             fixture.Players.AddRange(GetPlayers(link));
             return fixture;
@@ -91,7 +97,6 @@
 
             if (htmlNode == null || htmlNode.FirstChild == null)
             {
-                Console.WriteLine("No team sheet.");
                 yield break;    
             }
 
@@ -104,7 +109,6 @@
 
                 htmlNode = htmlNode.NextSibling;
 
-                Console.WriteLine(result);
                 yield return result;
                 
             } while (htmlNode != null);

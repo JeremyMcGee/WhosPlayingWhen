@@ -14,16 +14,21 @@
         public Site()
         {
             persister.GetInitialChildren = GetDefaultInitialChildren;
+
+            Logger.Debug("Scanning for: ");
+            GetDefaultInitialChildren().ToList().ForEach(child => Logger.Debug("  {0}", child.Name));
         }
 
         public void Initialize()
         {
+            Logger.Debug("Removing backing store.");
             persister.RemoveBackingStore();
-            Scan();
         }
 
         public void Scan()
         {
+            Logger.Info("Scanning fixtures.");
+
             var config = new PageConfig();
 
             var calendarListPage = new CalendarListPage(config.CalendarListUrl);
@@ -53,7 +58,8 @@
 
         private void SendMailToParent(Child player)
         {
-            throw new NotImplementedException();
+            Logger.Info(player.Name);
+            player.GetMessageForParent().ForEach(message => Logger.Info(message));
         }
 
         private IEnumerable<Child> GetDefaultInitialChildren()

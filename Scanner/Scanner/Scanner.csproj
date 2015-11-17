@@ -53,6 +53,7 @@
     <Compile Include="Child.cs" />
     <Compile Include="BackingStore.cs" />
     <Compile Include="Fixture.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="PageConfig.cs" />
     <Compile Include="Site.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

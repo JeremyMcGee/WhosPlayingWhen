@@ -43,6 +43,7 @@ namespace Scanner
         {
             string json = JsonConvert.SerializeObject(children);
 
+            Logger.Debug("Creating backing store.");
             var applicationFile = GetBackingStoreFilename();
             File.WriteAllText(applicationFile, json);
         }

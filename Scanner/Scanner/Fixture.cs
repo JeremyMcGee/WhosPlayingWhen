@@ -17,6 +17,8 @@
 
         public string HomeAway { get; set; }
 
+        public string Link { get; set; }
+
         public Fixture()
         {
             Players = new List<string>();
@@ -27,16 +29,14 @@
         public bool CanBeConsideredSameAs(Fixture other)
         {
             return (other.School == this.School)
-                   && (other.Kickoff == this.Kickoff)
+                   && (other.Kickoff.Value.Date == this.Kickoff.Value.Date)
                    && (other.Team == this.Team)
-                   && (other.Sport == this.Sport)
-                   && (other.Venue == this.Venue)
-                   && (other.HomeAway == this.HomeAway);
+                   && (other.Sport == this.Sport);
         }
 
         public override string ToString()
         {
-            return string.Format("Fixture: {0}, {1}, {2}, {3}, {4}, {5}", Sport, School, Team, HomeAway, Venue, Kickoff);
+            return string.Format("Fixture: {0}, {1}, {2}, {3}, {4}, {5}, {6}", Sport, School, Team, HomeAway, Venue, Kickoff, Link);
         }
     }
 }
